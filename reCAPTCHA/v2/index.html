@@ -1,5 +1,7 @@
 <html>
   <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css"/>
+    <link rel="stylesheet" href="../dist/style.min.css"/>
   <script>
     function onSubmit(token) {
       alert('thanks ' + document.getElementById('field').value + ' ' + token);
@@ -22,15 +24,19 @@
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
-    <form>
-      Name: (required) <input id="field" name="field">
-      <div id="recaptcha" class="g-recaptcha"
-          data-sitekey="6LfqRcYjAAAAAFIqkaJYbB2QlSGtgzyDPTaJMv28"
-          data-callback="onSubmit"
-          data-size="invisible"
-          data-badge="none"></div>
-      <button id="submit">submit</button>
-    </form>
+    
+    <div class="container" id="app">
+      <h1 class="text-center">reCAPTCHA v2 使用範例</h1>
+      <form>
+        <input id="field" type="text" placeholder=""/>
+        <div id="recaptcha" class="g-recaptcha"
+            data-sitekey="6LfqRcYjAAAAAFIqkaJYbB2QlSGtgzyDPTaJMv28"
+            data-callback="onSubmit"
+            data-size="invisible"
+            data-badge="none"></div>
+        <button id="submit">submit</button>
+      </form>
+    </div>
     <script>onload();</script>
   </body>
 </html>
