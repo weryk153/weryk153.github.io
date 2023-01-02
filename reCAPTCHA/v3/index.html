@@ -7,56 +7,16 @@
   <body>
     <div class="container" id="app">
       <h1 class="text-center">reCAPTCHA v3 使用範例</h1>
-      <ul>
-        <li><strong>class </strong>必須為「g-recaptcha」</li>
-        <li><strong>data-sitekey</strong>，填入「網站金鑰」</li>
-        <li><strong>data-action</strong>，v3 新增的，這邊填的值會顯示在後台報表中</li>
-        <li><strong>data-callback</strong>，驗證完成後要觸發哪個 function，會回傳 g-recaptcha-response token</li>
-      </ul>
-      <h3>點擊下方的「送出」按鈕來測試</h3>
       <form>
-        <label>隨便填個東西</label>
-        <input type="text" placeholder="好啦不填也可以"/>
+        <input type="text" placeholder=""/>
         <button class="g-recaptcha" type="button" data-sitekey="6LcHjsYjAAAAALe-G3m62B26BKLdqiS7_bKucPKY" data-action="verify" data-callback="verifyCallback">送出</button>
       </form>
-      <h4>驗證成功才會出現的按鈕</h4>
-      <summary class="text-center">
-        <button class="none" id="verify-true" type="button">驗證成功！</button>
-        <button class="none" id="verify-false" type="button">我懷疑你是機器人！</button>
-      </summary>
-      <hr/>
     </div>
     <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>
     <script>
-      // GAS 部署為網路應用程式後取得的 URL
-      var uriGAS = 'https://script.google.com/macros/s/AKfycbyhRIpkjlmkQiAVCkFr03lOcFUwOuyo1wB1AOiKcqbXxLAFSgSfZ30D8KOHUis1I7h3/exec';
-      
-      // 方法 1：reCAPTCHA 送到後端做驗證
       function verifyCallback(token) {
         var formData = new FormData();
         formData.append('token', token);
-      
-        fetch(uriGAS, {
-          method: "POST",
-          body: formData
-        }).then(response => response.json())
-          .then(result => {
-            if(result.success) {
-              // 分數大過 0.5，才當作是真實人類操作
-              if(result.score > 0.5) {
-                document.getElementById('verify-true').classList.remove('none');
-              }
-              // 分數低於 0.5，當作機器人
-              else {
-                document.getElementById('verify-false').classList.remove('none');
-              }
-            } else {
-              window.alert(result['error-codes'][0])
-            }
-          })
-          .catch(err => {
-            window.alert(err)
-          })
         alert(token)
       }
     </script>
