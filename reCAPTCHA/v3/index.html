@@ -14,11 +14,34 @@
     </div>
     <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>
     <script>
+      let uriGAS = 'https://script.google.com/macros/s/AKfycby5iJiYe2rgWD8ZhE9XkWWfZ_vESEAF4lYBmKwM5uQQP-xj771XpNhauzlfVTJHzyc/exec'
+      // 方法 1：reCAPTCHA 送到後端做驗證
       function verifyCallback(token) {
-        var formData = new FormData();
-        formData.append('token', token);
-        alert(token)
-      }
+      
+      var formData = new FormData();
+      formData.append('token', token);
+    
+      fetch(uriGAS, {
+        method: "POST",
+        body: formData
+      }).then(response => response.json())
+        .then(result => {
+          if(result.success) {
+            // 分數大過 0.8，才當作是真實人類操作
+            if(result.score > 0.8) {
+              alert('你是人類')
+            }
+            else {
+              alert('你是機器人')
+            }
+          } else {
+            window.alert(result['error-codes'][0])
+          }
+        })
+        .catch(err => {
+          window.alert(err)
+        })
+    }
     </script>
   </body>
 </html>
