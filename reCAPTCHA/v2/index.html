@@ -3,6 +3,38 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css"/>
     <link rel="stylesheet" href="../dist/style.min.css"/>
   <script>
+    let uriGAS = 'https://script.google.com/macros/s/AKfycbwEZizGn-EtyK7c41AcS0xNWIjxPRna-1gqUJSKdrQpe11gEqe9FIDWsaIXqjhbhn8/exec'
+          // 方法 1：reCAPTCHA 送到後端做驗證
+    function verifyCallback(token) {
+      
+      var formData = new FormData();
+      formData.append('token', token);
+    
+      fetch(uriGAS, {
+        method: "POST",
+        body: formData
+      }).then(response => response.json())
+        .then(result => {
+          if(result.success) {
+            alert('success')
+          } else {
+            window.alert(result['error-codes'][0])
+          }
+        })
+        .catch(err => {
+          window.alert(err)
+        })
+    }
+    
+    // 過期要做的事
+    function expired(ex) {
+      window.alert('reCAPTCHA 驗證程序到期')
+    }
+    
+    // 失敗要做的事
+    function error(err) {
+      window.alert('reCAPTCHA 驗證失敗')
+    }
     function onSubmit(token) {
       alert(token);
     }
@@ -31,7 +63,7 @@
         <input id="field" type="text" placeholder=""/>
         <div id="recaptcha" class="g-recaptcha"
             data-sitekey="6LfqRcYjAAAAAFIqkaJYbB2QlSGtgzyDPTaJMv28"
-            data-callback="onSubmit"
+            data-callback="verifyCallback"
             data-size="invisible"
             data-badge="none"></div>
         <button id="submit">submit</button>
